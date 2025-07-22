@@ -1,0 +1,12 @@
+{
+  "io-packages": [
+    "java/io",
+    "java/nio/file",
+    "java/net",
+    "javax/mail",
+    "org/springframework/data",
+    "org/apache/commons/fileupload",
+    "com/amazonaws",
+    "com/google/firebase"
+  ]
+}
