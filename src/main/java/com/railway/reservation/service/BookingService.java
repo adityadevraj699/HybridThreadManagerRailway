@@ -28,24 +28,42 @@ public class BookingService {
     }
 
     public String processBooking(String user, String src, String dest, int age, String trainId) {
-        try {
-            FareCalculationTask fareTask = new FareCalculationTask(src, dest, age);
-            manager.executeAuto(fareTask);
-            Thread.sleep(50);
-            double fare = fareTask.getResult();
-
-            PaymentTask payTask = new PaymentTask(user, fare);
-            manager.executeAuto(payTask);
-
-            SaveBookingTask saveTask = new SaveBookingTask(manager, repository, trainService, user, src, dest, age, fare, trainId);
-            manager.executeAuto(saveTask);
-
-        } catch (Exception e) {
-            return "❌ Booking failed: " + e.getMessage();
+    try {
+        // 1. ✅ Validate train exists
+        var train = trainService.getTrainById(trainId);
+        if (train == null) {
+            return "❌ Invalid train ID: " + trainId;
         }
 
-        return "✅ Booking confirmed for " + user;
+        // 2. ✅ Validate source and destination match
+        if (!train.getSrc().equalsIgnoreCase(src) || !train.getDest().equalsIgnoreCase(dest)) {
+            return "❌ Invalid route: Train " + trainId + " goes from " + train.getSrc() + " to " + train.getDest();
+        }
+
+        // 3. ✅ Check seat availability
+        if (train.getAvailableSeats() <= 0) {
+            return "❌ Train " + trainId + " is fully booked";
+        }
+
+        // 4. ✅ Proceed with fare calculation
+        FareCalculationTask fareTask = new FareCalculationTask(src, dest, age);
+        manager.executeAuto(fareTask);
+        Thread.sleep(50);
+        double fare = fareTask.getResult();
+
+        // 5. ✅ Simulate payment and save
+        PaymentTask payTask = new PaymentTask(user, fare);
+        manager.executeAuto(payTask);
+
+        SaveBookingTask saveTask = new SaveBookingTask(manager, repository, trainService, user, src, dest, age, fare, trainId);
+        manager.executeAuto(saveTask);
+
+    } catch (Exception e) {
+        return "❌ Booking failed: " + e.getMessage();
     }
+
+    return "✅ Booking confirmed for " + user;
+}
 
     public List<Booking> getAllBookings() {
         return repository.findAll();
