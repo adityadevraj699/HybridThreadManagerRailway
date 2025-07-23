@@ -1,4 +1,5 @@
 {
-  "com.railway.reservation.service.BookingService$1": "CPU",
-  "com.railway.reservation.service.BookingService$1$1": "IO"
+  "com.railway.reservation.thread.FareCalculationTask" : "CPU",
+  "com.railway.reservation.thread.PaymentTask" : "IO",
+  "com.railway.reservation.thread.SaveBookingTask" : "MIXED"
 }

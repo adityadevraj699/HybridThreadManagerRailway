@@ -31,7 +31,7 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
-        <!-- Spring Boot JPA for DB Access -->
+        <!-- Spring Boot JPA -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
@@ -58,23 +58,45 @@
             <version>9.5</version>
         </dependency>
 
+        <!-- Jackson for JSON -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+        </dependency>
+
         <!-- Spring Boot Test -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+        
+       <!-- ✅ JUnit 5 Jupiter API for unit testing -->
+<dependency>
+    <groupId>org.junit.jupiter</groupId>
+    <artifactId>junit-jupiter</artifactId>
+    <version>5.10.0</version>
+    <scope>test</scope>
+</dependency>
+
+<dependency>
+  <groupId>io.micrometer</groupId>
+  <artifactId>micrometer-registry-prometheus</artifactId>
+</dependency>
+
+<dependency>
+  <groupId>org.springframework.boot</groupId>
+  <artifactId>spring-boot-starter-actuator</artifactId>
+</dependency>
+
+
+
     </dependencies>
 
     <build>
         <plugins>
-            <!-- Spring Boot Plugin -->
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
 
-            <!-- Java 21 Compiler -->
+            <!-- Java Compiler with preview feature -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -86,6 +108,47 @@
                     </compilerArgs>
                 </configuration>
             </plugin>
+
+            <!-- ✅ TaskMetadataGenerator runs after classes are compiled -->
+           <!-- ✅ TaskMetadataGenerator runs after classes are compiled -->
+<!-- ✅ TaskMetadataGenerator runs after classes are compiled -->
+<plugin>
+  <groupId>org.codehaus.mojo</groupId>
+  <artifactId>exec-maven-plugin</artifactId>
+  <version>3.1.0</version>
+  <executions>
+    <execution>
+      <id>generate-task-metadata</id>
+      <phase>process-classes</phase>
+      <goals>
+        <goal>exec</goal>
+      </goals>
+      <configuration>
+        <executable>java</executable>
+        <arguments>
+          <argument>--enable-preview</argument>
+          <argument>-cp</argument>
+          <classpath />
+          <argument>com.railway.reservation.analysis.TaskMetadataGenerator</argument>
+        </arguments>
+      </configuration>
+    </execution>
+  </executions>
+</plugin>
+
+
+
+
+
+            <!-- Spring Boot Plugin with preview -->
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <jvmArguments>--enable-preview</jvmArguments>
+                </configuration>
+            </plugin>
+
         </plugins>
     </build>
 

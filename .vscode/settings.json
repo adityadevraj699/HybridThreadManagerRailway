@@ -1,6 +1,9 @@
 {
     "java.compile.nullAnalysis.mode": "automatic",
     "cSpell.words": [
+        "codehaus",
+        "databind",
+        "fasterxml",
         "javax",
         "projectlombok",
         "springframework"
