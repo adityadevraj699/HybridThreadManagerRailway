@@ -1,3 +1,4 @@
+// 📁 File: SaveBookingTask.java
 package com.railway.reservation.thread;
 
 import com.railway.reservation.model.Booking;
@@ -34,7 +35,6 @@ public class SaveBookingTask extends SmartTask {
 
         try (var scope = new StructuredTaskScope.ShutdownOnFailure()) {
 
-            // CPU-bound task: seat booking
             var seatBookingFuture = scope.fork(() -> {
                 manager.runCpu(() -> {
                     System.out.println("⚙️ [CPU SUB-TASK] Thread: " + Thread.currentThread());
@@ -45,7 +45,6 @@ public class SaveBookingTask extends SmartTask {
                 return null;
             });
 
-            // IO-bound task: DB save
             var saveBookingFuture = scope.fork(() -> {
                 manager.runIo(() -> {
                     System.out.println("💾 [IO SUB-TASK] Thread: " + Thread.currentThread());
@@ -56,6 +55,7 @@ public class SaveBookingTask extends SmartTask {
                             .age(age)
                             .fare(fare)
                             .trainId(trainId)
+                            .time(System.currentTimeMillis()) // ✅ required by constructor
                             .build();
 
                     repository.save(booking);
@@ -64,7 +64,6 @@ public class SaveBookingTask extends SmartTask {
                 return null;
             });
 
-            // Wait for both to complete
             scope.join();
             scope.throwIfFailed();
 

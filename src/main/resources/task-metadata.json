@@ -1,5 +1,6 @@
 {
+  "com.railway.reservation.thread.SaveBookingTask" : "MIXED",
+  "com.railway.reservation.thread.AsyncIOTask" : "CPU",
   "com.railway.reservation.thread.FareCalculationTask" : "CPU",
-  "com.railway.reservation.thread.PaymentTask" : "IO",
-  "com.railway.reservation.thread.SaveBookingTask" : "MIXED"
+  "com.railway.reservation.thread.PaymentTask" : "IO"
 }

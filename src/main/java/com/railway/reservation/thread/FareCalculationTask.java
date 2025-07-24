@@ -19,4 +19,6 @@ public class FareCalculationTask extends SmartTask {
     public double getResult() {
         return result;
     }
+   
+
 }
